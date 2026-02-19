@@ -5,7 +5,6 @@ import kotlin.math.roundToLong
 /*
  Regressão Linear em Kotlin
  Previsão de preço de casas sabendo a àrea em m²
- Implementação pedagógica
 */
 
 // ===============================
