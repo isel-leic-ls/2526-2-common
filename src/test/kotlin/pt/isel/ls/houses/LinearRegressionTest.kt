@@ -6,7 +6,7 @@ import kotlin.test.*
 class LinearRegressionTest {
 
     // ===============================
-    // 1. Testes à normalização
+    // 1. Normalization tests
     // ===============================
 
     @Test
@@ -36,7 +36,7 @@ class LinearRegressionTest {
     }
 
     // ===============================
-    // 2. Testes às funções auxiliares
+    // 2. Helper function tests
     // ===============================
 
     @Test
@@ -74,7 +74,7 @@ class LinearRegressionTest {
     }
 
     // ===============================
-    // 3. Testes ao treino
+    // 3. Training tests
     // ===============================
 
     @Test
@@ -86,7 +86,7 @@ class LinearRegressionTest {
             House(1.0, 2.0)
         )
         val params = train(simpleData, epochs = 5000, lr = 0.1)
-        // Esperamos w próximo de 2 e b próximo de 0
+        // We expect w close to 2 and b close to 0
         assertTrue((params.w - 2.0).absoluteValue < 0.1)
         assertTrue((params.b).absoluteValue < 0.1)
     }
@@ -99,6 +99,6 @@ class LinearRegressionTest {
         val prediction = predict(house.area, params)
         val err = (prediction - house.price).absoluteValue
         println(err)
-        assertTrue(err < 0.05) // erro pequeno na escala normalizada
+        assertTrue(err < 0.05) // small error on normalized scale
     }
 }
