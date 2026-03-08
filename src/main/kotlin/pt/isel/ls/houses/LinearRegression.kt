@@ -1,5 +1,6 @@
 package pt.isel.ls.houses
 
+import kotlin.math.absoluteValue
 import kotlin.math.roundToLong
 
 /*
@@ -34,7 +35,7 @@ val houses = listOf(
 class Scale(values: List<Double>) {
     val min: Double = values.min()  // Minimum value of the scale
     val max: Double = values.max()  // Maximum value of the scale
-    val delta: Double = max + min   // Length of the scale
+    val delta: Double = max - min   // Length of the scale
     // Normalize a value to the [0, 1] interval
     fun normalize(value: Double) = (value - min) / delta
     // Denormalize a value back to the original scale
