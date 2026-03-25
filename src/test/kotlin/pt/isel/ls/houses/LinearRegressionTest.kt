@@ -1,10 +1,11 @@
 package pt.isel.ls.houses
 
 import kotlin.math.absoluteValue
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class LinearRegressionTest {
-
     // ===============================
     // 1. Normalization tests
     // ===============================
@@ -54,11 +55,12 @@ class LinearRegressionTest {
 
     @Test
     fun `gradients should compute correct partial derivatives`() {
-        val grad = gradients(
-            x = 2.0,
-            error = 3.0,
-            n = 4
-        )
+        val grad =
+            gradients(
+                x = 2.0,
+                error = 3.0,
+                n = 4,
+            )
         assertEquals((2.0 / 4) * 3.0 * 2.0, grad.w, 1e-9)
         assertEquals((2.0 / 4) * 3.0, grad.b, 1e-9)
     }
@@ -68,7 +70,7 @@ class LinearRegressionTest {
         val p = Params(1.0, 1.0)
         val delta = Params(0.5, 0.5)
         val lr = 0.1
-        val (w,b) = updateParams(p, delta, lr)
+        val (w, b) = updateParams(p, delta, lr)
         assertEquals(0.95, w, 1e-9)
         assertEquals(0.95, b, 1e-9)
     }
@@ -80,11 +82,12 @@ class LinearRegressionTest {
     @Test
     fun `train should reduce error on simple linear data`() {
         // y = 2x
-        val simpleData = listOf(
-            House(0.0, 0.0),
-            House(0.5, 1.0),
-            House(1.0, 2.0)
-        )
+        val simpleData =
+            listOf(
+                House(0.0, 0.0),
+                House(0.5, 1.0),
+                House(1.0, 2.0),
+            )
         val params = train(simpleData, epochs = 5000, lr = 0.1)
         // We expect w close to 2 and b close to 0
         assertTrue((params.w - 2.0).absoluteValue < 0.1)

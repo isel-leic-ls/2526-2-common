@@ -1,6 +1,5 @@
 package pt.isel.ls.houses
 
-import kotlin.math.absoluteValue
 import kotlin.math.roundToLong
 
 /*
@@ -16,16 +15,17 @@ import kotlin.math.roundToLong
 data class House(val area: Double, val price: Double)
 
 // Original data with actual empty intervals
-val houses = listOf(
-    House(35.0, 120000.0),
-    House(52.0, 155000.0),
-    House(70.0, 210000.0),
-    House(95.0, 260000.0),
-    // gap: no data between 95 and 140
-    House(140.0, 340000.0),
-    // large gap
-    House(220.0, 480000.0)
-)
+val houses =
+    listOf(
+        House(35.0, 120000.0),
+        House(52.0, 155000.0),
+        House(70.0, 210000.0),
+        House(95.0, 260000.0),
+        // gap: no data between 95 and 140
+        House(140.0, 340000.0),
+        // large gap
+        House(220.0, 480000.0),
+    )
 
 // ===============================
 // 2. Normalization
@@ -33,29 +33,36 @@ val houses = listOf(
 
 // Scale of values to normalize
 class Scale(values: List<Double>) {
-    val min: Double = values.min()  // Minimum value of the scale
-    val max: Double = values.max()  // Maximum value of the scale
-    val delta: Double = max - min   // Length of the scale
+    val min: Double = values.min() // Minimum value of the scale
+    val max: Double = values.max() // Maximum value of the scale
+    val delta: Double = max - min // Length of the scale
+
     // Normalize a value to the [0, 1] interval
     fun normalize(value: Double) = (value - min) / delta
+
     // Denormalize a value back to the original scale
     fun denormalize(value: Double) = value * delta + min
 }
 
 // Represents normalized data + normalization scales
 data class NormalizedData(
-    val areas: Scale,   // Scale for areas
-    val prices: Scale,  // Scale for prices
-    val data: List<House> // Normalized data
+    val areas: Scale,
+    val prices: Scale,
+    val data: List<House>,
 )
 
 // Normalize data
 fun List<House>.normalize(): NormalizedData {
     val areas = Scale(map { it.area })
     val prices = Scale(map { it.price })
-    return NormalizedData(areas, prices, data = map {
-        House(areas.normalize(it.area), prices.normalize(it.price))
-    })
+    return NormalizedData(
+        areas,
+        prices,
+        data =
+            map {
+                House(areas.normalize(it.area), prices.normalize(it.price))
+            },
+    )
 }
 
 // ===============================
@@ -68,48 +75,61 @@ data class Params(val w: Double, val b: Double)
 operator fun Params.plus(other: Params) = Params(w + other.w, b + other.b)
 
 // Hypothesis function: y = weight x + bias
-fun predict(x: Double, p: Params): Double = p.w * x + p.b
+fun predict(
+    x: Double,
+    p: Params,
+): Double = p.w * x + p.b
 
 // ===============================
 // 4. Helper functions
 // ===============================
 
 // Compute simple error
-fun error(yPred: Double, yReal: Double): Double =
-    yPred - yReal
+fun error(
+    yPred: Double,
+    yReal: Double,
+): Double = yPred - yReal
 
-// Compute gradients (derivatives of MSE)
-fun gradients(x: Double, error: Double, n: Int) = Params(
-    (2.0 / n) * error * x,  // weight delta
-    (2.0 / n) * error,      // bias delta
+// Compute gradients (derivatives of MSE)  weight delta and bias delta
+fun gradients(
+    x: Double,
+    error: Double,
+    n: Int,
+) = Params(
+    (2.0 / n) * error * x,
+    (2.0 / n) * error,
 )
 
 // Update parameters using gradient descent
-fun updateParams(p: Params, delta: Params, lr: Double) = Params(
-    p.w - lr * delta.w,    // weight
-    p.b - lr * delta.b,    // bias
+fun updateParams(
+    p: Params,
+    delta: Params,
+    lr: Double,
+) = Params(
+    p.w - lr * delta.w,
+    p.b - lr * delta.b,
 )
 
 // ===============================
 // 5. Training
 // ===============================
 
-// Main training function
+// Main training function, receives data normalized
 fun train(
-    data: List<House>, // normalized
+    data: List<House>,
     epochs: Int = 3000,
-    lr: Double = 0.05
+    lr: Double = 0.05,
 ): Params {
-
     var params = Params(w = 0.0, b = 0.0)
 
     // Learning loop
     repeat(epochs) {
-        val total = data.fold(Params(0.0,0.0)) { p, house ->
-            val yPred = predict(house.area, params)
-            val e = error(yPred, house.price)
-            p + gradients(house.area, e, data.size)
-        }
+        val total =
+            data.fold(Params(0.0, 0.0)) { p, house ->
+                val yPred = predict(house.area, params)
+                val e = error(yPred, house.price)
+                p + gradients(house.area, e, data.size)
+            }
         params = updateParams(params, total, lr)
     }
     return params
