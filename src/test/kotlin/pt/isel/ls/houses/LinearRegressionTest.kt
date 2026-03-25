@@ -101,7 +101,6 @@ class LinearRegressionTest {
         val house = data.first()
         val prediction = predict(house.area, params)
         val err = (prediction - house.price).absoluteValue
-        println(err)
         assertTrue(err < 0.05) // small error on normalized scale
     }
 }
