@@ -1,26 +1,25 @@
 name: Gradle Test (at date)
 
 on:
-workflow_dispatch:
-schedule:
-  - cron: '30 13 25 3 *'
+  schedule:
+    - cron: '50 13 25 3 *'
 
 jobs:
-build:
-runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  - name: Configure Java
-    uses: actions/setup-java@v4
-    with:
-      distribution: 'temurin'
-      java-version: '21'
+      - name: Configure Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
 
-  - name: Give gradlew permissions
-    run: chmod +x gradlew
+      - name: Give gradlew permissions
+        run: chmod +x gradlew
 
-  - name: Execute Tests
-    run: ./gradlew test
+      - name: Execute Tests
+        run: ./gradlew test
