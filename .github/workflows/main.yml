@@ -3,7 +3,7 @@ name: Gradle Test (at date)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '50 13 25 3 *'
+    - cron: '58 13 25 3 *'
 
 jobs:
   build:
