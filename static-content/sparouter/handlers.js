@@ -107,22 +107,22 @@ function createStudent(mainContent){
             const inputName = document.querySelector("#idName")
             const inputNumber = document.querySelector("#idNumber")
             const options = {
-                    method : "POST",
-                    headers : {
-                        "Content-Type" : "application/json",
-                        "Accept" : "application/json"
-                    },
-                    body : JSON.stringify({
-                        name : inputName.value,
-                        number : parseInt(inputNumber.value)
-                    })
-                }
-                fetch(API_BASE_URL + "students", options)
-                    .then(res => res.json())
-                    .then(student => {
-                        console.log(student)
-                        window.location.hash = "students"
-                    })
+                method : "POST",
+                headers : {
+                    "Content-Type" : "application/json",
+                    "Accept" : "application/json"
+                },
+                body : JSON.stringify({
+                    name : inputName.value,
+                    number : parseInt(inputNumber.value)
+                })
+            }
+            fetch(API_BASE_URL + "students", options)
+                .then(res => res.json())
+                .then(student => {
+                    console.log(student)
+                    window.location.hash = "students"
+                })
         }
         mainContent.replaceChildren(form)
 }
