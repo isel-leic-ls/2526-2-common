@@ -1,0 +1,5 @@
+### GET request to example server
+GET localhost:9000/postgres/students
+
+
+

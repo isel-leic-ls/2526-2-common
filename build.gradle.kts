@@ -20,6 +20,7 @@ dependencies {
 }
 
 tasks.register<Copy>("copyRuntimeDependencies") {
+    description = "Copies the runtime dependencies to the build/libs directory."
     into("build/libs")
     from(configurations.runtimeClasspath)
 }
@@ -28,7 +29,6 @@ tasks.named<Jar>("jar") {
     dependsOn("copyRuntimeDependencies")
     manifest {
         attributes["Main-Class"] = "pt.isel.ls.http.HTTPServerKt"
-        attributes["Class-Path"] = configurations.runtimeClasspath.get().joinToString(" ") { it.name }
+        attributes["Class-Path"] = "2526-2-common.jar " + configurations.runtimeClasspath.get().joinToString(" ") { it.name }
     }
 }
-
